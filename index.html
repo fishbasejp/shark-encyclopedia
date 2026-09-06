@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>サメ・魚類 個人図鑑</title>
+  <title>魚類図鑑</title>
 
   <style>
     :root {
@@ -14,6 +14,7 @@
       --text: #172554;
       --subtext: #475569;
       --line: #cbd5e1;
+      --white: #ffffff;
     }
 
     * {
@@ -22,8 +23,8 @@
 
     body {
       margin: 0;
-      background: var(--paper);
       color: var(--text);
+      background: var(--paper);
       font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
         "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
     }
@@ -43,35 +44,73 @@
 
     h1 {
       margin: 0;
-      font-size: 26px;
+      font-size: 27px;
     }
 
     main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 20px 16px 40px;
+      padding: 20px 16px 48px;
     }
 
-    .section-title {
+    .search-box {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .search-box span {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      pointer-events: none;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 15px 16px 15px 48px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      outline: none;
+      color: var(--text);
+      background: var(--white);
+      font-size: 16px;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    #search-input:focus {
+      border-color: var(--sea);
+      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+    }
+
+    .result-summary {
       margin: 0 0 12px;
-      font-size: 18px;
+      color: var(--subtext);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    #fish-list {
+      display: grid;
+      gap: 16px;
     }
 
     .fish-card {
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 18px;
-      background: white;
+      background: var(--white);
       box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
     }
 
     .photo-placeholder {
       display: grid;
-      min-height: 180px;
+      min-height: 150px;
       place-items: center;
       color: #0f766e;
-      font-size: 52px;
       background: linear-gradient(135deg, #cffafe, #e0f2fe);
+      font-size: 52px;
     }
 
     .card-body {
@@ -89,7 +128,7 @@
       font-weight: 700;
     }
 
-    h2 {
+    .fish-name {
       margin: 0;
       font-size: 28px;
     }
@@ -131,8 +170,18 @@
       line-height: 1.65;
     }
 
+    .empty-message {
+      padding: 30px 18px;
+      border: 1px dashed var(--line);
+      border-radius: 14px;
+      color: var(--subtext);
+      background: var(--white);
+      text-align: center;
+      line-height: 1.7;
+    }
+
     .notice {
-      margin: 20px 2px 0;
+      margin: 22px 2px 0;
       color: var(--subtext);
       font-size: 13px;
       line-height: 1.7;
@@ -143,54 +192,140 @@
 <body>
   <header>
     <p>MY PERSONAL DATABASE</p>
-    <h1>サメ・魚類 個人図鑑</h1>
+    <h1>魚類図鑑</h1>
   </header>
 
   <main>
-    <h2 class="section-title">登録種：1種</h2>
+    <div class="search-box">
+      <span>⌕</span>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="和名・学名・英名・分類名で検索"
+        autocomplete="off"
+      >
+    </div>
 
-    <article class="fish-card">
-      <div class="photo-placeholder" aria-label="写真未登録">🦈</div>
+    <p id="result-summary" class="result-summary"></p>
 
-      <div class="card-body">
-        <span class="tag">ネコザメ目・ネコザメ科</span>
-
-        <h2>ネコザメ</h2>
-        <p class="scientific-name">Heterodontus japonicus</p>
-        <p class="english-name">Japanese bullhead shark</p>
-
-        <dl>
-          <div class="item">
-            <dt>分類</dt>
-            <dd>軟骨魚綱／ネコザメ目／ネコザメ科／ネコザメ属</dd>
-          </div>
-
-          <div class="item">
-            <dt>分布</dt>
-            <dd>北西太平洋：日本、朝鮮半島、中国北部〜台湾周辺</dd>
-          </div>
-
-          <div class="item">
-            <dt>生息環境</dt>
-            <dd>沿岸の岩礁・藻場を中心とする底生性のサメ</dd>
-          </div>
-
-          <div class="item">
-            <dt>水深</dt>
-            <dd>おおむね水深6〜100 m</dd>
-          </div>
-
-          <div class="item">
-            <dt>メモ</dt>
-            <dd>写真、展示記録、観察記録、出典等は今後追加する。</dd>
-          </div>
-        </dl>
-      </div>
-    </article>
+    <section id="fish-list"></section>
 
     <p class="notice">
-      この図鑑は個人用です。次の工程で、種名検索・分類フィルタ・種の追加・データ保存を実装します。
+      現在は検索機能の試作版です。次の工程で、分類による絞り込みと新しい魚種を追加する入力画面を作ります。
     </p>
   </main>
+
+  <script>
+    const fishData = [
+      {
+        japaneseName: "ネコザメ",
+        scientificName: "Heterodontus japonicus",
+        englishName: "Japanese bullhead shark",
+        className: "軟骨魚綱",
+        order: "ネコザメ目",
+        family: "ネコザメ科",
+        genus: "ネコザメ属",
+        distribution: "北西太平洋：日本、朝鮮半島、中国北部〜台湾周辺",
+        habitat: "沿岸の岩礁・藻場を中心とする底生性のサメ",
+        depth: "おおむね水深6〜100 m",
+        note: "写真、展示記録、観察記録、出典等は今後追加する。"
+      }
+    ];
+
+    const searchInput = document.getElementById("search-input");
+    const fishList = document.getElementById("fish-list");
+    const resultSummary = document.getElementById("result-summary");
+
+    function normalizeText(text) {
+      return String(text).normalize("NFKC").toLowerCase();
+    }
+
+    function matchesSearch(fish, query) {
+      const searchableText = [
+        fish.japaneseName,
+        fish.scientificName,
+        fish.englishName,
+        fish.className,
+        fish.order,
+        fish.family,
+        fish.genus,
+        fish.distribution,
+        fish.habitat
+      ].join(" ");
+
+      return normalizeText(searchableText).includes(normalizeText(query));
+    }
+
+    function createFishCard(fish) {
+      return `
+        <article class="fish-card">
+          <div class="photo-placeholder" aria-label="写真未登録">🦈</div>
+
+          <div class="card-body">
+            <span class="tag">${fish.order}・${fish.family}</span>
+
+            <h2 class="fish-name">${fish.japaneseName}</h2>
+            <p class="scientific-name">${fish.scientificName}</p>
+            <p class="english-name">${fish.englishName}</p>
+
+            <dl>
+              <div class="item">
+                <dt>分類</dt>
+                <dd>${fish.className}／${fish.order}／${fish.family}／${fish.genus}</dd>
+              </div>
+
+              <div class="item">
+                <dt>分布</dt>
+                <dd>${fish.distribution}</dd>
+              </div>
+
+              <div class="item">
+                <dt>生息環境</dt>
+                <dd>${fish.habitat}</dd>
+              </div>
+
+              <div class="item">
+                <dt>水深</dt>
+                <dd>${fish.depth}</dd>
+              </div>
+
+              <div class="item">
+                <dt>メモ</dt>
+                <dd>${fish.note}</dd>
+              </div>
+            </dl>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderFishList() {
+      const query = searchInput.value.trim();
+
+      const filteredFish = fishData.filter((fish) => {
+        return query === "" || matchesSearch(fish, query);
+      });
+
+      resultSummary.textContent = `登録種：${fishData.length}種　表示：${filteredFish.length}種`;
+
+      if (filteredFish.length === 0) {
+        fishList.innerHTML = `
+          <div class="empty-message">
+            該当する魚種が見つかりません。<br>
+            和名・学名・英名・目・科・属などで検索してください。
+          </div>
+        `;
+        return;
+      }
+
+      fishList.innerHTML = filteredFish
+        .map((fish) => createFishCard(fish))
+        .join("");
+    }
+
+    searchInput.addEventListener("input", renderFishList);
+
+    renderFishList();
+  </script>
 </body>
 </html>
