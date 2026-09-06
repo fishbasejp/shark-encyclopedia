@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サメ・魚類 個人図鑑</title>
+
+  <style>
+    :root {
+      --sea-dark: #083344;
+      --sea: #0f766e;
+      --sea-light: #ccfbf1;
+      --paper: #f8fafc;
+      --text: #172554;
+      --subtext: #475569;
+      --line: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+        "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+    }
+
+    header {
+      padding: 28px 20px 22px;
+      color: white;
+      background: linear-gradient(135deg, var(--sea-dark), var(--sea));
+    }
+
+    header p {
+      margin: 0 0 6px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      opacity: 0.85;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 16px 40px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .fish-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .photo-placeholder {
+      display: grid;
+      min-height: 180px;
+      place-items: center;
+      color: #0f766e;
+      font-size: 52px;
+      background: linear-gradient(135deg, #cffafe, #e0f2fe);
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #115e59;
+      background: var(--sea-light);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .scientific-name {
+      margin: 5px 0 3px;
+      color: var(--subtext);
+      font-size: 17px;
+      font-style: italic;
+    }
+
+    .english-name {
+      margin: 0 0 18px;
+      color: var(--subtext);
+      font-size: 14px;
+    }
+
+    dl {
+      margin: 0;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 10px;
+      padding: 12px 0;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    dt {
+      color: var(--subtext);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    dd {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .notice {
+      margin: 20px 2px 0;
+      color: var(--subtext);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <p>MY PERSONAL DATABASE</p>
+    <h1>サメ・魚類 個人図鑑</h1>
+  </header>
+
+  <main>
+    <h2 class="section-title">登録種：1種</h2>
+
+    <article class="fish-card">
+      <div class="photo-placeholder" aria-label="写真未登録">🦈</div>
+
+      <div class="card-body">
+        <span class="tag">ネコザメ目・ネコザメ科</span>
+
+        <h2>ネコザメ</h2>
+        <p class="scientific-name">Heterodontus japonicus</p>
+        <p class="english-name">Japanese bullhead shark</p>
+
+        <dl>
+          <div class="item">
+            <dt>分類</dt>
+            <dd>軟骨魚綱／ネコザメ目／ネコザメ科／ネコザメ属</dd>
+          </div>
+
+          <div class="item">
+            <dt>分布</dt>
+            <dd>北西太平洋：日本、朝鮮半島、中国北部〜台湾周辺</dd>
+          </div>
+
+          <div class="item">
+            <dt>生息環境</dt>
+            <dd>沿岸の岩礁・藻場を中心とする底生性のサメ</dd>
+          </div>
+
+          <div class="item">
+            <dt>水深</dt>
+            <dd>おおむね水深6〜100 m</dd>
+          </div>
+
+          <div class="item">
+            <dt>メモ</dt>
+            <dd>写真、展示記録、観察記録、出典等は今後追加する。</dd>
+          </div>
+        </dl>
+      </div>
+    </article>
+
+    <p class="notice">
+      この図鑑は個人用です。次の工程で、種名検索・分類フィルタ・種の追加・データ保存を実装します。
+    </p>
+  </main>
+</body>
+</html>
