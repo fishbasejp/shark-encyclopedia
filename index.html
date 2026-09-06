@@ -77,6 +77,30 @@
       border-color: var(--main);
       box-shadow: 0 0 0 3px rgba(15,118,110,.18);
     }
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 0 0 14px;
+    }
+
+    .filters select {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 8px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      outline: none;
+      color: var(--text);
+      background: var(--white);
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .filters select:focus {
+      border-color: var(--main);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.18);
+    }
 
     .toolbar {
       display: flex;
@@ -292,6 +316,19 @@
       <input id="searchInput" type="search"
         placeholder="和名・学名・英名・分類名で検索" autocomplete="off">
     </div>
+    <div class="filters">
+      <select id="classFilter" aria-label="綱で絞り込む">
+        <option value="">綱：すべて</option>
+      </select>
+
+      <select id="orderFilter" aria-label="目で絞り込む">
+        <option value="">目：すべて</option>
+      </select>
+
+      <select id="familyFilter" aria-label="科で絞り込む">
+        <option value="">科：すべて</option>
+      </select>
+    </div>
 
     <div class="toolbar">
       <p id="summary"></p>
@@ -438,6 +475,9 @@
     const summary = document.getElementById("summary");
     const modal = document.getElementById("modal");
     const fishForm = document.getElementById("fishForm");
+    const classFilter = document.getElementById("classFilter");
+    const orderFilter = document.getElementById("orderFilter");
+    const familyFilter = document.getElementById("familyFilter");
 
     function openDB() {
       return new Promise((resolve, reject) => {
@@ -502,6 +542,43 @@
         fish.aquariumRecord, fish.note
       ].join(" ");
     }
+    function setFilterOptions(select, values, defaultLabel) {
+      const selectedValue = select.value;
+
+      const uniqueValues = [...new Set(values.filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, "ja"));
+
+      select.innerHTML = `
+        <option value="">${defaultLabel}：すべて</option>
+        ${uniqueValues.map((value) =>
+          `<option value="${escapeHTML(value)}">${escapeHTML(value)}</option>`
+        ).join("")}
+      `;
+
+      if (uniqueValues.includes(selectedValue)) {
+        select.value = selectedValue;
+      }
+    }
+
+    function refreshFilters() {
+      setFilterOptions(
+        classFilter,
+        fishData.map((fish) => fish.className),
+        "綱"
+      );
+
+      setFilterOptions(
+        orderFilter,
+        fishData.map((fish) => fish.order),
+        "目"
+      );
+
+      setFilterOptions(
+        familyFilter,
+        fishData.map((fish) => fish.family),
+        "科"
+      );
+    }
 
     function row(label, value) {
       if (!value) return "";
@@ -550,9 +627,22 @@
     function render() {
       const query = normalize(searchInput.value.trim());
 
-      const results = fishData.filter((fish) => {
-        return !query || normalize(searchableText(fish)).includes(query);
+            const results = fishData.filter((fish) => {
+        const matchesText =
+          !query || normalize(searchableText(fish)).includes(query);
+
+        const matchesClass =
+          !classFilter.value || fish.className === classFilter.value;
+
+        const matchesOrder =
+          !orderFilter.value || fish.order === orderFilter.value;
+
+        const matchesFamily =
+          !familyFilter.value || fish.family === familyFilter.value;
+
+        return matchesText && matchesClass && matchesOrder && matchesFamily;
       });
+
 
       summary.textContent =
         `登録種：${fishData.length}種　表示：${results.length}種`;
@@ -573,8 +663,9 @@
         .join("");
     }
 
-    async function reloadFish() {
+        async function reloadFish() {
       fishData = await getAllFish();
+      refreshFilters();
       render();
     }
 
@@ -598,6 +689,9 @@
     });
 
     searchInput.addEventListener("input", render);
+    classFilter.addEventListener("change", render);
+    orderFilter.addEventListener("change", render);
+    familyFilter.addEventListener("change", render);
 
     fishForm.addEventListener("submit", async (event) => {
       event.preventDefault();
