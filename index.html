@@ -7,19 +7,18 @@
 
   <style>
     :root {
-      --sea-dark: #083344;
-      --sea: #0f766e;
-      --sea-light: #ccfbf1;
+      --dark: #083344;
+      --main: #0f766e;
+      --light: #ccfbf1;
       --paper: #f8fafc;
       --text: #172554;
-      --subtext: #475569;
+      --sub: #475569;
       --line: #cbd5e1;
       --white: #ffffff;
+      --danger: #be123c;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -32,42 +31,38 @@
     header {
       padding: 28px 20px 22px;
       color: white;
-      background: linear-gradient(135deg, var(--sea-dark), var(--sea));
+      background: linear-gradient(135deg, var(--dark), var(--main));
     }
 
     header p {
       margin: 0 0 6px;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      opacity: 0.85;
+      font-size: 12px;
+      letter-spacing: .1em;
+      opacity: .85;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 27px;
-    }
+    h1 { margin: 0; font-size: 28px; }
 
     main {
-      max-width: 720px;
-      margin: 0 auto;
+      max-width: 760px;
+      margin: auto;
       padding: 20px 16px 48px;
     }
 
-    .search-box {
+    .search {
       position: relative;
-      margin-bottom: 22px;
+      margin-bottom: 12px;
     }
 
-    .search-box span {
+    .search span {
       position: absolute;
       top: 50%;
       left: 16px;
       transform: translateY(-50%);
       font-size: 20px;
-      pointer-events: none;
     }
 
-    #search-input {
+    #searchInput {
       width: 100%;
       padding: 15px 16px 15px 48px;
       border: 1px solid var(--line);
@@ -76,46 +71,68 @@
       color: var(--text);
       background: var(--white);
       font-size: 16px;
-      box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06);
     }
 
-    #search-input:focus {
-      border-color: var(--sea);
-      box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+    #searchInput:focus {
+      border-color: var(--main);
+      box-shadow: 0 0 0 3px rgba(15,118,110,.18);
     }
 
-    .result-summary {
-      margin: 0 0 12px;
-      color: var(--subtext);
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    #summary {
+      margin: 0;
+      color: var(--sub);
       font-size: 14px;
       font-weight: 700;
     }
 
-    #fish-list {
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 15px;
+      color: white;
+      background: var(--main);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      color: var(--text);
+      background: #e2e8f0;
+    }
+
+    button.danger { background: var(--danger); }
+
+    #fishList {
       display: grid;
       gap: 16px;
     }
 
-    .fish-card {
+    .card {
       overflow: hidden;
       border: 1px solid var(--line);
       border-radius: 18px;
       background: var(--white);
-      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+      box-shadow: 0 6px 18px rgba(15,23,42,.08);
     }
 
-    .photo-placeholder {
+    .photo {
       display: grid;
-      min-height: 150px;
+      min-height: 130px;
       place-items: center;
-      color: #0f766e;
       background: linear-gradient(135deg, #cffafe, #e0f2fe);
-      font-size: 52px;
+      font-size: 50px;
     }
 
-    .card-body {
-      padding: 20px;
-    }
+    .cardBody { padding: 19px; }
 
     .tag {
       display: inline-block;
@@ -123,44 +140,39 @@
       padding: 5px 10px;
       border-radius: 999px;
       color: #115e59;
-      background: var(--sea-light);
+      background: var(--light);
       font-size: 12px;
       font-weight: 700;
     }
 
-    .fish-name {
-      margin: 0;
-      font-size: 28px;
-    }
+    .name { margin: 0; font-size: 27px; }
 
-    .scientific-name {
+    .scientific {
       margin: 5px 0 3px;
-      color: var(--subtext);
+      color: var(--sub);
       font-size: 17px;
       font-style: italic;
     }
 
-    .english-name {
-      margin: 0 0 18px;
-      color: var(--subtext);
+    .english {
+      margin: 0 0 15px;
+      color: var(--sub);
       font-size: 14px;
     }
 
-    dl {
-      margin: 0;
-    }
+    dl { margin: 0; }
 
     .item {
       display: grid;
-      grid-template-columns: 92px 1fr;
-      gap: 10px;
-      padding: 12px 0;
+      grid-template-columns: 96px 1fr;
+      gap: 8px;
+      padding: 11px 0;
       border-top: 1px solid #e2e8f0;
     }
 
     dt {
-      color: var(--subtext);
-      font-size: 14px;
+      color: var(--sub);
+      font-size: 13px;
       font-weight: 700;
     }
 
@@ -168,23 +180,102 @@
       margin: 0;
       font-size: 14px;
       line-height: 1.65;
+      overflow-wrap: anywhere;
     }
 
-    .empty-message {
+    .empty {
       padding: 30px 18px;
       border: 1px dashed var(--line);
       border-radius: 14px;
-      color: var(--subtext);
+      color: var(--sub);
       background: var(--white);
       text-align: center;
       line-height: 1.7;
     }
 
-    .notice {
-      margin: 22px 2px 0;
-      color: var(--subtext);
+    .modal {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: none;
+      overflow-y: auto;
+      padding: 18px;
+      background: rgba(15,23,42,.52);
+    }
+
+    .modal.open { display: block; }
+
+    .modalBox {
+      max-width: 700px;
+      margin: 18px auto;
+      padding: 20px;
+      border-radius: 18px;
+      background: var(--white);
+    }
+
+    .modalHead {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .modalHead h2 { margin: 0; font-size: 22px; }
+
+    .close {
+      padding: 8px 12px;
+      color: var(--sub);
+      background: #e2e8f0;
+    }
+
+    .formGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 13px;
+    }
+
+    .wide { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--sub);
       font-size: 13px;
-      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--text);
+      background: white;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .formButtons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .note {
+      color: var(--sub);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    @media (max-width: 520px) {
+      .formGrid { grid-template-columns: 1fr; }
+      .wide { grid-column: auto; }
+      .item { grid-template-columns: 86px 1fr; }
     }
   </style>
 </head>
@@ -196,136 +287,355 @@
   </header>
 
   <main>
-    <div class="search-box">
+    <div class="search">
       <span>⌕</span>
-      <input
-        id="search-input"
-        type="search"
-        placeholder="和名・学名・英名・分類名で検索"
-        autocomplete="off"
-      >
+      <input id="searchInput" type="search"
+        placeholder="和名・学名・英名・分類名で検索" autocomplete="off">
     </div>
 
-    <p id="result-summary" class="result-summary"></p>
+    <div class="toolbar">
+      <p id="summary"></p>
+      <button id="openForm">＋ 魚種を追加</button>
+    </div>
 
-    <section id="fish-list"></section>
-
-    <p class="notice">
-      現在は検索機能の試作版です。次の工程で、分類による絞り込みと新しい魚種を追加する入力画面を作ります。
-    </p>
+    <section id="fishList"></section>
   </main>
 
+  <div id="modal" class="modal">
+    <div class="modalBox">
+      <div class="modalHead">
+        <h2>魚種を追加</h2>
+        <button id="closeForm" class="close">閉じる</button>
+      </div>
+
+      <form id="fishForm">
+        <div class="formGrid">
+          <div>
+            <label>和名 *</label>
+            <input name="japaneseName" required placeholder="例：ネコザメ">
+          </div>
+
+          <div>
+            <label>学名</label>
+            <input name="scientificName" placeholder="例：Heterodontus japonicus">
+          </div>
+
+          <div class="wide">
+            <label>英名</label>
+            <input name="englishName" placeholder="例：Japanese bullhead shark">
+          </div>
+
+          <div>
+            <label>綱</label>
+            <input name="className" placeholder="例：軟骨魚綱">
+          </div>
+
+          <div>
+            <label>目</label>
+            <input name="order" placeholder="例：ネコザメ目">
+          </div>
+
+          <div>
+            <label>科</label>
+            <input name="family" placeholder="例：ネコザメ科">
+          </div>
+
+          <div>
+            <label>属</label>
+            <input name="genus" placeholder="例：ネコザメ属">
+          </div>
+
+          <div class="wide">
+            <label>分布</label>
+            <textarea name="distribution"></textarea>
+          </div>
+
+          <div class="wide">
+            <label>生息環境</label>
+            <textarea name="habitat"></textarea>
+          </div>
+
+          <div>
+            <label>水深</label>
+            <input name="depth" placeholder="例：10〜100 m">
+          </div>
+
+          <div>
+            <label>最大全長</label>
+            <input name="maxLength" placeholder="例：100 cm">
+          </div>
+
+          <div>
+            <label>IUCN評価</label>
+            <select name="iucn">
+              <option value="">未入力</option>
+              <option>LC</option>
+              <option>NT</option>
+              <option>VU</option>
+              <option>EN</option>
+              <option>CR</option>
+              <option>EW</option>
+              <option>EX</option>
+              <option>DD</option>
+              <option>NE</option>
+            </select>
+          </div>
+
+          <div class="wide">
+            <label>展示水族館・展示記録</label>
+            <textarea name="aquariumRecord"></textarea>
+          </div>
+
+          <div class="wide">
+            <label>出典URL</label>
+            <input name="sourceUrl" type="url" placeholder="https://">
+          </div>
+
+          <div class="wide">
+            <label>備考</label>
+            <textarea name="note"></textarea>
+          </div>
+        </div>
+
+        <p class="note">
+          写真の追加・編集・削除・JSONバックアップは、次の工程で実装します。
+        </p>
+
+        <div class="formButtons">
+          <button type="button" id="cancelForm" class="secondary">キャンセル</button>
+          <button type="submit">この内容で登録</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
-    const fishData = [
-      {
-        japaneseName: "ネコザメ",
-        scientificName: "Heterodontus japonicus",
-        englishName: "Japanese bullhead shark",
-        className: "軟骨魚綱",
-        order: "ネコザメ目",
-        family: "ネコザメ科",
-        genus: "ネコザメ属",
-        distribution: "北西太平洋：日本、朝鮮半島、中国北部〜台湾周辺",
-        habitat: "沿岸の岩礁・藻場を中心とする底生性のサメ",
-        depth: "おおむね水深6〜100 m",
-        note: "写真、展示記録、観察記録、出典等は今後追加する。"
-      }
-    ];
+    const DB_NAME = "fishEncyclopediaDB";
+    const STORE_NAME = "fish";
+    let db;
+    let fishData = [];
 
-    const searchInput = document.getElementById("search-input");
-    const fishList = document.getElementById("fish-list");
-    const resultSummary = document.getElementById("result-summary");
+    const defaultFish = {
+      japaneseName: "ネコザメ",
+      scientificName: "Heterodontus japonicus",
+      englishName: "Japanese bullhead shark",
+      className: "軟骨魚綱",
+      order: "ネコザメ目",
+      family: "ネコザメ科",
+      genus: "ネコザメ属",
+      distribution: "北西太平洋：日本、朝鮮半島、中国北部〜台湾周辺",
+      habitat: "沿岸の岩礁・藻場を中心とする底生性のサメ",
+      depth: "おおむね水深6〜100 m",
+      maxLength: "",
+      iucn: "",
+      aquariumRecord: "",
+      sourceUrl: "",
+      note: "写真、展示記録、観察記録、出典等は今後追加する。"
+    };
 
-    function normalizeText(text) {
-      return String(text).normalize("NFKC").toLowerCase();
+    const searchInput = document.getElementById("searchInput");
+    const fishList = document.getElementById("fishList");
+    const summary = document.getElementById("summary");
+    const modal = document.getElementById("modal");
+    const fishForm = document.getElementById("fishForm");
+
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+
+        request.onupgradeneeded = (event) => {
+          db = event.target.result;
+          if (!db.objectStoreNames.contains(STORE_NAME)) {
+            db.createObjectStore(STORE_NAME, {
+              keyPath: "id",
+              autoIncrement: true
+            });
+          }
+        };
+
+        request.onsuccess = (event) => {
+          db = event.target.result;
+          resolve();
+        };
+
+        request.onerror = () => reject(request.error);
+      });
     }
 
-    function matchesSearch(fish, query) {
-      const searchableText = [
-        fish.japaneseName,
-        fish.scientificName,
-        fish.englishName,
-        fish.className,
-        fish.order,
-        fish.family,
-        fish.genus,
-        fish.distribution,
-        fish.habitat
+    function getAllFish() {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readonly");
+        const request = transaction.objectStore(STORE_NAME).getAll();
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function addFish(fish) {
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, "readwrite");
+        const request = transaction.objectStore(STORE_NAME).add(fish);
+
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    function normalize(text) {
+      return String(text || "").normalize("NFKC").toLowerCase();
+    }
+
+    function escapeHTML(text) {
+      return String(text || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function searchableText(fish) {
+      return [
+        fish.japaneseName, fish.scientificName, fish.englishName,
+        fish.className, fish.order, fish.family, fish.genus,
+        fish.distribution, fish.habitat, fish.iucn,
+        fish.aquariumRecord, fish.note
       ].join(" ");
-
-      return normalizeText(searchableText).includes(normalizeText(query));
     }
 
-    function createFishCard(fish) {
+    function row(label, value) {
+      if (!value) return "";
       return `
-        <article class="fish-card">
-          <div class="photo-placeholder" aria-label="写真未登録">🦈</div>
+        <div class="item">
+          <dt>${label}</dt>
+          <dd>${escapeHTML(value)}</dd>
+        </div>
+      `;
+    }
 
-          <div class="card-body">
-            <span class="tag">${fish.order}・${fish.family}</span>
+    function card(fish) {
+      const classification = [
+        fish.className, fish.order, fish.family, fish.genus
+      ].filter(Boolean).join("／");
 
-            <h2 class="fish-name">${fish.japaneseName}</h2>
-            <p class="scientific-name">${fish.scientificName}</p>
-            <p class="english-name">${fish.englishName}</p>
+      const tag = [fish.order, fish.family].filter(Boolean).join("・");
+
+      return `
+        <article class="card">
+          <div class="photo">🦈</div>
+          <div class="cardBody">
+            ${tag ? `<span class="tag">${escapeHTML(tag)}</span>` : ""}
+            <h2 class="name">${escapeHTML(fish.japaneseName)}</h2>
+            ${fish.scientificName ?
+              `<p class="scientific">${escapeHTML(fish.scientificName)}</p>` : ""}
+            ${fish.englishName ?
+              `<p class="english">${escapeHTML(fish.englishName)}</p>` : ""}
 
             <dl>
-              <div class="item">
-                <dt>分類</dt>
-                <dd>${fish.className}／${fish.order}／${fish.family}／${fish.genus}</dd>
-              </div>
-
-              <div class="item">
-                <dt>分布</dt>
-                <dd>${fish.distribution}</dd>
-              </div>
-
-              <div class="item">
-                <dt>生息環境</dt>
-                <dd>${fish.habitat}</dd>
-              </div>
-
-              <div class="item">
-                <dt>水深</dt>
-                <dd>${fish.depth}</dd>
-              </div>
-
-              <div class="item">
-                <dt>メモ</dt>
-                <dd>${fish.note}</dd>
-              </div>
+              ${row("分類", classification)}
+              ${row("分布", fish.distribution)}
+              ${row("生息環境", fish.habitat)}
+              ${row("水深", fish.depth)}
+              ${row("最大全長", fish.maxLength)}
+              ${row("IUCN", fish.iucn)}
+              ${row("展示記録", fish.aquariumRecord)}
+              ${row("出典URL", fish.sourceUrl)}
+              ${row("備考", fish.note)}
             </dl>
           </div>
         </article>
       `;
     }
 
-    function renderFishList() {
-      const query = searchInput.value.trim();
+    function render() {
+      const query = normalize(searchInput.value.trim());
 
-      const filteredFish = fishData.filter((fish) => {
-        return query === "" || matchesSearch(fish, query);
+      const results = fishData.filter((fish) => {
+        return !query || normalize(searchableText(fish)).includes(query);
       });
 
-      resultSummary.textContent = `登録種：${fishData.length}種　表示：${filteredFish.length}種`;
+      summary.textContent =
+        `登録種：${fishData.length}種　表示：${results.length}種`;
 
-      if (filteredFish.length === 0) {
+      if (results.length === 0) {
         fishList.innerHTML = `
-          <div class="empty-message">
+          <div class="empty">
             該当する魚種が見つかりません。<br>
-            和名・学名・英名・目・科・属などで検索してください。
+            和名・学名・英名・分類名などで検索してください。
           </div>
         `;
         return;
       }
 
-      fishList.innerHTML = filteredFish
-        .map((fish) => createFishCard(fish))
+      fishList.innerHTML = results
+        .sort((a, b) => a.japaneseName.localeCompare(b.japaneseName, "ja"))
+        .map(card)
         .join("");
     }
 
-    searchInput.addEventListener("input", renderFishList);
+    async function reloadFish() {
+      fishData = await getAllFish();
+      render();
+    }
 
-    renderFishList();
+    function openForm() {
+      fishForm.reset();
+      modal.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeForm() {
+      modal.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    document.getElementById("openForm").addEventListener("click", openForm);
+    document.getElementById("closeForm").addEventListener("click", closeForm);
+    document.getElementById("cancelForm").addEventListener("click", closeForm);
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closeForm();
+    });
+
+    searchInput.addEventListener("input", render);
+
+    fishForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(fishForm);
+      const fish = Object.fromEntries(formData.entries());
+
+      for (const key in fish) {
+        fish[key] = fish[key].trim();
+      }
+
+      await addFish(fish);
+      closeForm();
+      searchInput.value = "";
+      await reloadFish();
+    });
+
+    async function startApp() {
+      try {
+        await openDB();
+        const existingFish = await getAllFish();
+
+        if (existingFish.length === 0) {
+          await addFish(defaultFish);
+        }
+
+        await reloadFish();
+      } catch (error) {
+        fishList.innerHTML = `
+          <div class="empty">
+            データベースを開始できませんでした。<br>
+            SafariのWebサイトデータ設定を確認してください。
+          </div>
+        `;
+      }
+    }
+
+    startApp();
   </script>
 </body>
 </html>
